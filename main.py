@@ -1,6 +1,11 @@
 from plcom import SicstusCommunicator
 from typing import Union,Literal
-import json
+#import json
+
+
+################################################################################
+### Static Old Sudoku Thingies
+################################################################################
 
 Sudoku_char_t = Union[int,Literal['_']]
 Sudoku_t = list[list[Sudoku_char_t]]
@@ -53,36 +58,48 @@ sudoku_board_2 : Sudoku_t = [
     [3,'_','_','_','_','_',7,'_','_']
 ]
 
+###############################################################################
+### New Helper function
+###############################################################################
+
 def stringify_board(board : Sudoku_t) -> str:
     out : list[str] = []
     for row in board:
         out.append('[' + ','.join(map(str,row)) + ']')
     return '[' + ','.join(out) + ']'
 
-print_debug=False
-sc = SicstusCommunicator(consultFile="sudoku",debug=print_debug)
+###############################################################################
+### Sicstus Code Thingies
+###############################################################################
 
-#sc.once("consult(sudoku).")
-sc.once("use_module(library(codesio)).")
-sc.once("assert((decode_string(Input,O) :- name(Input,A),append(A,\".\",S),read_from_codes(S,O))).")
+def main() -> None:
+    print_debug=False
+    sc = SicstusCommunicator(consultFile="sudoku",debug=print_debug)
 
-sc.state( stringify_board(sudoku_board_1) )
+    #sc.once("consult(sudoku).")
+    sc.once("use_module(library(codesio)).")
+    sc.once("assert((decode_string(Input,O) :- name(Input,A),append(A,\".\",S),read_from_codes(S,O))).")
 
-#print(sc.state())
+    sc.state( stringify_board(sudoku_board_1) )
 
-stop = False
-#for board in sc.call("P=" + stringify_board(sudoku_board_1) + ",sudoku(P,3),Result=P."):
-for board in sc.call("decode_string(StateIn,P),sudoku(P,3),Result=P."):
+    #print(sc.state())
 
-    pretty_print_sudoku(board)
-    
-    while True:
-        inp = str(input(" ? fler svar? (ja/NEJ) "))
-        if inp.lower() in [';','ja','j']:
+    stop = False
+    #for board in sc.call("P=" + stringify_board(sudoku_board_1) + ",sudoku(P,3),Result=P."):
+    for board in sc.call("decode_string(StateIn,P),sudoku(P,3),Result=P."):
+
+        pretty_print_sudoku(board)
+        
+        while True:
+            inp = str(input(" ? fler svar? (ja/NEJ) "))
+            if inp.lower() in [';','ja','j']:
+                break
+            elif inp.lower() in ['','n','nej']:
+                stop = True
+                break
+        if stop is True:
             break
-        elif inp.lower() in ['','n','nej']:
-            stop = True
-            break
-    if stop is True:
-        break
 
+
+if __name__ == '__main__':
+    main()

@@ -47,6 +47,7 @@ class SicstusCommunicator:
         if self.debug:
             print(m)
 
+    #Auto-updating ID counter, so that every write will have an unique ID. To add better logging later.
     @property
     def idcounter(self) -> int:
         self._idcounter += 1

@@ -1,4 +1,9 @@
 /*
+  Shamlessly stolen from http://www.hakank.org/sicstus/, since I am no 
+  good prolog programmer yet. 
+*/
+
+/*
 
   Sudoku puzzle in SICStus Prolog.
 
