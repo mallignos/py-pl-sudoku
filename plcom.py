@@ -29,12 +29,12 @@ class SicstusCommunicator:
         else:
             pass
 
+        procArgs += [ '--noinfo', '--nologo' ] if not debug else []
         procArgs += [ '--goal', 'jsonrpc_server_main([call_hook(call)]),halt.' ]
 
         self.proc = subprocess.Popen(
             procArgs,
             stdout=subprocess.PIPE,
-            stderr=None if debug else subprocess.PIPE, #Hacky maybe?
             stdin=subprocess.PIPE,
             encoding='UTF-8'
         )
