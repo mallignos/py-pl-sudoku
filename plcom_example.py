@@ -72,12 +72,23 @@ def stringify_board(board : Sudoku_t) -> str:
 ### Sicstus Code Thingies
 ###############################################################################
 
+def loop_barrier():
+    while True:
+        inp = str(input(" ? fler svar? (ja/NEJ) "))
+        if inp.lower() in [';','ja','j']:
+            return False
+        elif inp.lower() in ['','n','nej']:
+            return True
+
+
 def main() -> None:
     print_debug=False
     sc = SicstusCommunicator(consultFile="sudoku",debug=print_debug)
 
     #sc.once("consult(sudoku).")
-    sc.once("use_module(library(codesio)).")
+    #sc.once("use_module(library(codesio)).")
+    sc.use_module('library(codesio)')
+    
     sc.once("assert((decode_string(Input,O) :- name(Input,A),append(A,\".\",S),read_from_codes(S,O))).")
 
     sc.state( stringify_board(sudoku_board_1) )
@@ -85,20 +96,14 @@ def main() -> None:
     #print(sc.state())
 
     stop = False
-    #for board in sc.call("P=" + stringify_board(sudoku_board_1) + ",sudoku(P,3),Result=P."):
     for board in sc.call("decode_string(StateIn,P),sudoku(P,3),Result=P."):
 
         pretty_print_sudoku(board)
-        
-        while True:
-            inp = str(input(" ? fler svar? (ja/NEJ) "))
-            if inp.lower() in [';','ja','j']:
-                break
-            elif inp.lower() in ['','n','nej']:
-                stop = True
-                break
-        if stop is True:
+
+        if loop_barrier():
             break
+        
+
 
 
 if __name__ == '__main__':

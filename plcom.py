@@ -59,6 +59,7 @@ class SicstusCommunicator:
 
     def _write_to_proc(self,msg : str) -> None:
         if self.proc.stdin is not None:
+            #print(msg)
             self.proc.stdin.write(msg)
             self.proc.stdin.flush()
         else:
@@ -122,9 +123,15 @@ class SicstusCommunicator:
             print(d)
     
     def _retry(self) -> dict[Any,Any]:
-        msg = msg = json.dumps({'jsonrpc':'2.0','id':self.idcounter ,'method':'retry'})
+        msg = json.dumps({'jsonrpc':'2.0','id':self.idcounter ,'method':'retry'})
         self._write_to_proc(msg)
         d = self._read_from_proc()
         return d
+
+    def assert_(self, command : str) -> None:
+        self.once('assert(('+command+')).')
+
+    def use_module(self,moduleName : str):
+        return self.once("use_module(" + moduleName + ").")
 
 
