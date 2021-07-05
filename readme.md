@@ -6,8 +6,9 @@ Project to see if I could make python and sicstud prolog talk to eachother using
 
 Run via the command 
 ```
-python3.9 main.py
+python3.9 plcom_example.py
+python3.9 symbolic_example.py
 ```
-or just run ``make``.
+or just run ``make`` with either ``plcom_example`` or ``symbolic_example``
 
-I don't know if it works for something other than Linux.
+Should work with Windows and Linux now.
